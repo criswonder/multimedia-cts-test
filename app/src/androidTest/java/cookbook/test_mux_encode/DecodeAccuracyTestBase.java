@@ -58,10 +58,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import androidx.test.rule.ActivityTestRule;
-
-import com.android.compatibility.common.util.ApiLevelUtil;
-import com.android.compatibility.common.util.MediaUtils;
+//import com.android.compatibility.common.util.ApiLevelUtil;
+//import com.android.compatibility.common.util.MediaUtils;
 
 import org.junit.After;
 import org.junit.Before;
@@ -89,13 +87,10 @@ public class DecodeAccuracyTestBase {
     protected DecodeAccuracyTestActivity mActivity;
     protected TestHelper testHelper;
 
-    @Rule
-    public ActivityTestRule<DecodeAccuracyTestActivity> mActivityRule =
-            new ActivityTestRule<>(DecodeAccuracyTestActivity.class);
+
 
     @Before
     public void setUp() throws Exception {
-        mActivity = mActivityRule.getActivity();
         mContext = mActivity.getApplicationContext();
         mResources = mActivity.getResources();
         testHelper = new TestHelper(mContext, mActivity);
@@ -106,7 +101,6 @@ public class DecodeAccuracyTestBase {
         mActivity = null;
         mResources = null;
         mContext = null;
-        mActivityRule = null;
     }
 
     protected void bringActivityToFront() {

@@ -31,6 +31,8 @@ import android.view.View;
 
 //import com.android.compatibility.common.util.MediaUtils;
 
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,7 +51,7 @@ import org.junit.Test;
 
 @TargetApi(24)
 @RunWith(Parameterized.class)
-//@MediaHeavyPresubmitTest
+//@RunWith(AndroidJUnit4.class)
 //@AppModeFull(reason = "There should be no instant apps specific behavior related to accuracy")
 public class DecodeAccuracyTest extends DecodeAccuracyTestBase {
 
