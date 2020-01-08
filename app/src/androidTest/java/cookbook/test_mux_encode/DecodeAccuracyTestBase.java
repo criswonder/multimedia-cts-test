@@ -46,6 +46,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.SystemClock;
+import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 import android.util.Pair;
 import android.view.PixelCopy;
@@ -80,17 +81,23 @@ import javax.microedition.khronos.egl.EGLDisplay;
 import javax.microedition.khronos.egl.EGLSurface;
 
 @TargetApi(16)
-public class DecodeAccuracyTestBase {
-
+public class DecodeAccuracyTestBase extends ActivityInstrumentationTestCase2<DecodeAccuracyTestActivity> {
+    private String TAG = "DecodeAccuracyTestBase";
+    private boolean VERBOSE = true;
     protected Context mContext;
     protected Resources mResources;
     protected DecodeAccuracyTestActivity mActivity;
     protected TestHelper testHelper;
 
+    public DecodeAccuracyTestBase() {
+        super(DecodeAccuracyTestActivity.class);
+    }
 
 
     @Before
     public void setUp() throws Exception {
+        super.setUp();
+        mActivity = getActivity();
         mContext = mActivity.getApplicationContext();
         mResources = mActivity.getResources();
         testHelper = new TestHelper(mContext, mActivity);
@@ -101,6 +108,10 @@ public class DecodeAccuracyTestBase {
         mActivity = null;
         mResources = null;
         mContext = null;
+    }
+
+    public void testMyFirst(){
+        if(VERBOSE) Log.e(TAG,"testMyFirst ");
     }
 
     protected void bringActivityToFront() {
@@ -128,7 +139,7 @@ public class DecodeAccuracyTestBase {
     static class SimplePlayer {
 
         public static final long MIN_MS_PER_FRAME = TimeUnit.SECONDS.toMillis(1) / 5; // 5 FPS
-        public static final long STARTUP_ALLOW_MS = TimeUnit.SECONDS.toMillis(1) ;
+        public static final long STARTUP_ALLOW_MS = TimeUnit.SECONDS.toMillis(1);
         public static final int END_OF_STREAM = -1;
         public static final int DEQUEUE_SUCCESS = 1;
         public static final int DEQUEUE_FAIL = 0;
@@ -161,10 +172,10 @@ public class DecodeAccuracyTestBase {
         /**
          * The function play the corresponding file for certain number of frames.
          *
-         * @param surface is the surface view of decoder output.
-         * @param videoFormat is the format of the video to extract and decode.
+         * @param surface          is the surface view of decoder output.
+         * @param videoFormat      is the format of the video to extract and decode.
          * @param numOfTotalFrames is the number of Frame wish to play.
-         * @param msPerFrameCap is the maximum msec per frame. No cap is set if value is less than 1.
+         * @param msPerFrameCap    is the maximum msec per frame. No cap is set if value is less than 1.
          * @return {@link PlayerResult} that consists the result.
          */
         public PlayerResult decodeVideoFrames(
@@ -227,8 +238,8 @@ public class DecodeAccuracyTestBase {
          * The function decode video frames and display in a surface.
          *
          * @param numOfTotalFrames is the number of frames to be decoded.
-         * @param timeOutMs is the time limit for decoding the frames.
-         * @param msPerFrameCap is the maximum msec per frame. No cap is set if value is less than 1.
+         * @param timeOutMs        is the time limit for decoding the frames.
+         * @param msPerFrameCap    is the maximum msec per frame. No cap is set if value is less than 1.
          * @return {@link PlayerResult} that consists the result.
          */
         private PlayerResult decodeFramesAndPlay(
@@ -578,7 +589,7 @@ public class DecodeAccuracyTestBase {
     /* Utility class for collecting common test case functionality. */
     class TestHelper {
 
-        private final String TAG =  TestHelper.class.getSimpleName();
+        private final String TAG = TestHelper.class.getSimpleName();
 
         private final Context context;
         private final Handler handler;
@@ -703,7 +714,8 @@ abstract class VideoViewFactory {
     public static final int VIEW_WIDTH = 480;
     public static final int VIEW_HEIGHT = 360;
 
-    public VideoViewFactory() {}
+    public VideoViewFactory() {
+    }
 
     public abstract void release();
 
@@ -713,7 +725,9 @@ abstract class VideoViewFactory {
 
     public void waitForViewIsAvailable() throws Exception {
         waitForViewIsAvailable(DEFAULT_VIEW_AVAILABLE_TIMEOUT_MS);
-    };
+    }
+
+    ;
 
     public abstract void waitForViewIsAvailable(long timeOutMs) throws Exception;
 
@@ -737,7 +751,8 @@ class TextureViewFactory extends VideoViewFactory implements TextureView.Surface
     private final Object syncToken = new Object();
     private TextureView textureView;
 
-    public TextureViewFactory() {}
+    public TextureViewFactory() {
+    }
 
     @Override
     public TextureView createView(Context context) {
@@ -795,7 +810,8 @@ class TextureViewFactory extends VideoViewFactory implements TextureView.Surface
 
     @Override
     public void onSurfaceTextureSizeChanged(
-            SurfaceTexture surfaceTexture, int width, int height) {}
+            SurfaceTexture surfaceTexture, int width, int height) {
+    }
 
     @Override
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
@@ -803,7 +819,8 @@ class TextureViewFactory extends VideoViewFactory implements TextureView.Surface
     }
 
     @Override
-    public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {}
+    public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {
+    }
 
 }
 
@@ -820,7 +837,8 @@ class SurfaceViewFactory extends VideoViewFactory implements SurfaceHolder.Callb
     private SurfaceView surfaceView;
     private SurfaceHolder surfaceHolder;
 
-    public SurfaceViewFactory() {}
+    public SurfaceViewFactory() {
+    }
 
     @Override
     public void release() {
@@ -875,7 +893,8 @@ class SurfaceViewFactory extends VideoViewFactory implements SurfaceHolder.Callb
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {}
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+    }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
@@ -885,7 +904,8 @@ class SurfaceViewFactory extends VideoViewFactory implements SurfaceHolder.Callb
     }
 
     @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {}
+    public void surfaceDestroyed(SurfaceHolder holder) {
+    }
 
 }
 
@@ -904,7 +924,8 @@ class GLSurfaceViewFactory extends VideoViewFactory {
     private GLSurfaceViewThread glSurfaceViewThread;
     private boolean byteBufferIsReady = false;
 
-    public GLSurfaceViewFactory() {}
+    public GLSurfaceViewFactory() {
+    }
 
     @Override
     public void release() {
@@ -979,11 +1000,11 @@ class GLSurfaceViewFactory extends VideoViewFactory {
         private float[] textureTransform = new float[16];
 
         private float[] triangleVerticesData = {
-            // X, Y, Z, U, V
-            -1f, -1f,  0f,  0f,  1f,
-             1f, -1f,  0f,  1f,  1f,
-            -1f,  1f,  0f,  0f,  0f,
-             1f,  1f,  0f,  1f,  0f,
+                // X, Y, Z, U, V
+                -1f, -1f, 0f, 0f, 1f,
+                1f, -1f, 0f, 1f, 1f,
+                -1f, 1f, 0f, 0f, 0f,
+                1f, 1f, 0f, 1f, 0f,
         };
         // Make the top-left corner corresponds to texture coordinate
         // (0, 0). This complies with the transformation matrix obtained from
@@ -991,22 +1012,22 @@ class GLSurfaceViewFactory extends VideoViewFactory {
 
         private static final String VERTEX_SHADER =
                 "attribute vec4 aPosition;\n"
-                + "attribute vec4 aTextureCoord;\n"
-                + "uniform mat4 uTextureTransform;\n"
-                + "varying vec2 vTextureCoord;\n"
-                + "void main() {\n"
-                + "    gl_Position = aPosition;\n"
-                + "    vTextureCoord = (uTextureTransform * aTextureCoord).xy;\n"
-                + "}\n";
+                        + "attribute vec4 aTextureCoord;\n"
+                        + "uniform mat4 uTextureTransform;\n"
+                        + "varying vec2 vTextureCoord;\n"
+                        + "void main() {\n"
+                        + "    gl_Position = aPosition;\n"
+                        + "    vTextureCoord = (uTextureTransform * aTextureCoord).xy;\n"
+                        + "}\n";
 
         private static final String FRAGMENT_SHADER =
                 "#extension GL_OES_EGL_image_external : require\n"
-                + "precision mediump float;\n"      // highp here doesn't seem to matter
-                + "varying vec2 vTextureCoord;\n"
-                + "uniform samplerExternalOES sTexture;\n"
-                + "void main() {\n"
-                + "    gl_FragColor = texture2D(sTexture, vTextureCoord);\n"
-                + "}\n";
+                        + "precision mediump float;\n"      // highp here doesn't seem to matter
+                        + "varying vec2 vTextureCoord;\n"
+                        + "uniform samplerExternalOES sTexture;\n"
+                        + "void main() {\n"
+                        + "    gl_FragColor = texture2D(sTexture, vTextureCoord);\n"
+                        + "}\n";
 
         private int glProgram;
         private int textureID = -1;
@@ -1022,7 +1043,8 @@ class GLSurfaceViewFactory extends VideoViewFactory {
         private ByteBuffer byteBuffer;
         private Looper looper;
 
-        public GLSurfaceViewThread() {}
+        public GLSurfaceViewThread() {
+        }
 
         @Override
         public void run() {
@@ -1072,13 +1094,13 @@ class GLSurfaceViewFactory extends VideoViewFactory {
             }
             // Configure EGL for pbuffer and OpenGL ES 2.0, 24-bit RGB.
             int[] configAttribs = {
-                EGL10.EGL_RED_SIZE, 8,
-                EGL10.EGL_GREEN_SIZE, 8,
-                EGL10.EGL_BLUE_SIZE, 8,
-                EGL10.EGL_ALPHA_SIZE, 8,
-                EGL10.EGL_RENDERABLE_TYPE, EGL14.EGL_OPENGL_ES2_BIT,
-                EGL10.EGL_SURFACE_TYPE, EGL10.EGL_PBUFFER_BIT,
-                EGL10.EGL_NONE
+                    EGL10.EGL_RED_SIZE, 8,
+                    EGL10.EGL_GREEN_SIZE, 8,
+                    EGL10.EGL_BLUE_SIZE, 8,
+                    EGL10.EGL_ALPHA_SIZE, 8,
+                    EGL10.EGL_RENDERABLE_TYPE, EGL14.EGL_OPENGL_ES2_BIT,
+                    EGL10.EGL_SURFACE_TYPE, EGL10.EGL_PBUFFER_BIT,
+                    EGL10.EGL_NONE
             };
             EGLConfig[] configs = new EGLConfig[1];
             int[] numConfigs = new int[1];
@@ -1088,8 +1110,8 @@ class GLSurfaceViewFactory extends VideoViewFactory {
             }
             // Configure EGL context for OpenGL ES 2.0.
             int[] contextAttribs = {
-                EGL14.EGL_CONTEXT_CLIENT_VERSION, 2,
-                EGL10.EGL_NONE
+                    EGL14.EGL_CONTEXT_CLIENT_VERSION, 2,
+                    EGL10.EGL_NONE
             };
             eglContext = egl10.eglCreateContext(
                     eglDisplay, configs[0], EGL10.EGL_NO_CONTEXT, contextAttribs);
@@ -1099,9 +1121,9 @@ class GLSurfaceViewFactory extends VideoViewFactory {
             }
             // Create a pbuffer surface.
             int[] surfaceAttribs = {
-                EGL10.EGL_WIDTH, VIEW_WIDTH,
-                EGL10.EGL_HEIGHT, VIEW_HEIGHT,
-                EGL10.EGL_NONE
+                    EGL10.EGL_WIDTH, VIEW_WIDTH,
+                    EGL10.EGL_HEIGHT, VIEW_HEIGHT,
+                    EGL10.EGL_NONE
             };
             eglSurface = egl10.eglCreatePbufferSurface(eglDisplay, configs[0], surfaceAttribs);
             checkEglError("eglCreatePbufferSurface");
@@ -1115,10 +1137,10 @@ class GLSurfaceViewFactory extends VideoViewFactory {
             surface.release();
             surfaceTexture.release();
             byteBufferIsReady = false;
-            byteBuffer =  null;
+            byteBuffer = null;
             if (eglDisplay != EGL10.EGL_NO_DISPLAY) {
                 egl10.eglMakeCurrent(eglDisplay,
-                    EGL10.EGL_NO_SURFACE, EGL10.EGL_NO_SURFACE, EGL10.EGL_NO_CONTEXT);
+                        EGL10.EGL_NO_SURFACE, EGL10.EGL_NO_SURFACE, EGL10.EGL_NO_CONTEXT);
                 egl10.eglDestroySurface(eglDisplay, eglSurface);
                 egl10.eglDestroyContext(eglDisplay, eglContext);
                 //TODO: uncomment following line after fixing crash in GL driver libGLESv2_adreno.so
@@ -1351,7 +1373,7 @@ class TextureViewSnapshot extends VideoViewSnapshot {
  * This class is to be used together with
  * {@link TestHelper#generateBitmapFromVideoViewSnapshot(VideoViewSnapshot)}
  */
-class SurfaceViewSnapshot extends VideoViewSnapshot  {
+class SurfaceViewSnapshot extends VideoViewSnapshot {
 
     private static final String TAG = SurfaceViewSnapshot.class.getSimpleName();
     private static final int PIXELCOPY_TIMEOUT_MS = 1000;
@@ -1464,7 +1486,7 @@ class SurfaceViewSnapshot extends VideoViewSnapshot  {
  * Runnable to get a bitmap from a GLSurfaceView on the UI thread via a handler.
  * Note, because of how the bitmap is captured in GLSurfaceView,
  * this method does not have to be a runnable.
-  * This class is to be used together with
+ * This class is to be used together with
  * {@link TestHelper#generateBitmapFromVideoViewSnapshot(VideoViewSnapshot)}
  */
 class GLSurfaceViewSnapshot extends VideoViewSnapshot {
@@ -1753,7 +1775,8 @@ class BitmapCompare {
     private static final int Y = 1;
     private static final int Z = 2;
 
-    private BitmapCompare() {}
+    private BitmapCompare() {
+    }
 
     /**
      * Produces greatest pixel between two bitmaps. Used to determine bitmap similarity.
@@ -1761,8 +1784,8 @@ class BitmapCompare {
      * @param bitmap1 A bitmap to compare to bitmap2.
      * @param bitmap2 A bitmap to compare to bitmap1.
      * @return A {@link Difference} with an integer describing the greatest pixel difference,
-     *     using {@link Integer#MAX_VALUE} for completely different bitmaps, and an optional
-     *     {@link Pair<Integer, Integer>} of the (col, row) pixel coordinate where it was first found.
+     * using {@link Integer#MAX_VALUE} for completely different bitmaps, and an optional
+     * {@link Pair<Integer, Integer>} of the (col, row) pixel coordinate where it was first found.
      */
     @TargetApi(12)
     public static Difference computeDifference(Bitmap bitmap1, Bitmap bitmap2) {
@@ -1789,8 +1812,8 @@ class BitmapCompare {
             }
         }
         return new Difference(greatestDifference, Pair.create(
-            greatestDifferenceIndex % bitmap1.getWidth(),
-            greatestDifferenceIndex / bitmap1.getHeight()));
+                greatestDifferenceIndex % bitmap1.getWidth(),
+                greatestDifferenceIndex / bitmap1.getHeight()));
     }
 
     @SuppressLint("UseSparseArrays")
@@ -1854,7 +1877,7 @@ class BitmapCompare {
         final double x = (comp[RED] * 0.4124) + (comp[GREEN] * 0.3576) + (comp[BLUE] * 0.1805);
         final double y = (comp[RED] * 0.2126) + (comp[GREEN] * 0.7152) + (comp[BLUE] * 0.0722);
         final double z = (comp[RED] * 0.0193) + (comp[GREEN] * 0.1192) + (comp[BLUE] * 0.9505);
-        return new double[] {x, y, z};
+        return new double[]{x, y, z};
     }
 
     /**
@@ -1897,7 +1920,7 @@ class BitmapCompare {
         final double l = (116 * comp[Y]) - 16;
         final double a = 500 * (comp[X] - comp[Y]);
         final double b = 200 * (comp[Y] - comp[Z]);
-        return new double[] {l, a, b};
+        return new double[]{l, a, b};
     }
 
     private static int euclideanDistance(double[] p1, double[] p2) {
@@ -1949,14 +1972,14 @@ class BitmapCompare {
             double x = hBorderSize;
             for (int xIndex = 0; xIndex < width; ++xIndex) {
                 // Determine the square of interest.
-                int left = (int)x;    // This is floor(x).
-                int top = (int)y;     // This is floor(y).
+                int left = (int) x;    // This is floor(x).
+                int top = (int) y;     // This is floor(y).
                 int right = left + 1;
                 int bottom = top + 1;
 
                 // (u, v) is the fractional part of (x, y).
-                double u = x - (double)left;
-                double v = y - (double)top;
+                double u = x - (double) left;
+                double v = y - (double) top;
 
                 // Precompute necessary products to save time.
                 double p00 = (1.0 - u) * (1.0 - v);
@@ -1980,9 +2003,9 @@ class BitmapCompare {
                 // Interpolate each component of RGB separately.
                 int[] mixedColor = new int[3];
                 for (int k = 0; k < 3; ++k) {
-                    mixedColor[k] = (int)Math.round(
+                    mixedColor[k] = (int) Math.round(
                             p00 * (double) rgb00[k] + p01 * (double) rgb01[k]
-                            + p10 * (double) rgb10[k] + p11 * (double) rgb11[k]);
+                                    + p10 * (double) rgb10[k] + p11 * (double) rgb11[k]);
                 }
                 // Convert RGB to bitmap Color format and store.
                 outputPixels[yIndex * width + xIndex] = Color.rgb(
@@ -2034,13 +2057,13 @@ class BitmapCompare {
         return computeMinimumDifference(
                 bitmap1,
                 bitmap2,
-                new Pair[] {
-                    Pair.create(hBorderH, 0.0),
-                    Pair.create(hBorderH, vBorderH),
-                    Pair.create(0.0, vBorderH),
-                    Pair.create(hBorder, 0.0),
-                    Pair.create(hBorder, vBorder),
-                    Pair.create(0.0, vBorder)
+                new Pair[]{
+                        Pair.create(hBorderH, 0.0),
+                        Pair.create(hBorderH, vBorderH),
+                        Pair.create(0.0, vBorderH),
+                        Pair.create(hBorder, 0.0),
+                        Pair.create(hBorder, vBorder),
+                        Pair.create(0.0, vBorder)
                 });
         // This default list of borderCrop comes from the behavior of
         // GLConsumer.computeTransformMatrix().
@@ -2079,7 +2102,8 @@ class BitmapCompare {
 /* Wrapper for MIME types. */
 final class MimeTypes {
 
-    private MimeTypes() {}
+    private MimeTypes() {
+    }
 
     public static final String VIDEO_VP9 = "video/x-vnd.on2.vp9";
     public static final String VIDEO_H264 = "video/avc";

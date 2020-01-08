@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="cookbook.test_mux_encode.DecodeAccuracyTestActivity"
+            android:name=".DecodeAccuracyTestActivity"
             android:configChanges="mcc|mnc|keyboard|keyboardHidden|orientation|screenSize|navigation"
             android:label="DecodeAccuracyTestActivity"
             android:screenOrientation="locked">

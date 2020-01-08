@@ -32,6 +32,7 @@ import android.view.View;
 //import com.android.compatibility.common.util.MediaUtils;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.filters.LargeTest;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -50,9 +51,7 @@ import org.junit.runners.Parameterized.Parameters;
 import org.junit.Test;
 
 @TargetApi(24)
-@RunWith(Parameterized.class)
-//@RunWith(AndroidJUnit4.class)
-//@AppModeFull(reason = "There should be no instant apps specific behavior related to accuracy")
+@LargeTest
 public class DecodeAccuracyTest extends DecodeAccuracyTestBase {
 
     private static final String TAG = DecodeAccuracyTest.class.getSimpleName();
@@ -61,81 +60,81 @@ public class DecodeAccuracyTest extends DecodeAccuracyTestBase {
     private static final int OFFSET = 10;
     private static final long PER_TEST_TIMEOUT_MS = 60000;
     private static final String[] VIDEO_FILES = {
-        // 144p
-        "video_decode_accuracy_and_capability-h264_256x108_30fps.mp4",
-        "video_decode_accuracy_and_capability-h264_256x144_30fps.mp4",
-        "video_decode_accuracy_and_capability-h264_192x144_30fps.mp4",
-        "video_decode_accuracy_and_capability-h264_82x144_30fps.mp4",
-        "video_decode_accuracy_and_capability-vp9_256x108_30fps.webm",
-        "video_decode_accuracy_and_capability-vp9_256x144_30fps.webm",
-        "video_decode_accuracy_and_capability-vp9_192x144_30fps.webm",
-        "video_decode_accuracy_and_capability-vp9_82x144_30fps.webm",
-        // 240p
-        "video_decode_accuracy_and_capability-h264_426x182_30fps.mp4",
-        "video_decode_accuracy_and_capability-h264_426x240_30fps.mp4",
-        "video_decode_accuracy_and_capability-h264_320x240_30fps.mp4",
-        "video_decode_accuracy_and_capability-h264_136x240_30fps.mp4",
-        "video_decode_accuracy_and_capability-vp9_426x182_30fps.webm",
-        "video_decode_accuracy_and_capability-vp9_426x240_30fps.webm",
-        "video_decode_accuracy_and_capability-vp9_320x240_30fps.webm",
-        "video_decode_accuracy_and_capability-vp9_136x240_30fps.webm",
-        // 360p
-        "video_decode_accuracy_and_capability-h264_640x272_30fps.mp4",
-        "video_decode_accuracy_and_capability-h264_640x360_30fps.mp4",
-        "video_decode_accuracy_and_capability-h264_480x360_30fps.mp4",
-        "video_decode_accuracy_and_capability-h264_202x360_30fps.mp4",
-        "video_decode_accuracy_and_capability-vp9_640x272_30fps.webm",
-        "video_decode_accuracy_and_capability-vp9_640x360_30fps.webm",
-        "video_decode_accuracy_and_capability-vp9_480x360_30fps.webm",
-        "video_decode_accuracy_and_capability-vp9_202x360_30fps.webm",
-        // 480p
-        "video_decode_accuracy_and_capability-h264_854x362_30fps.mp4",
-        "video_decode_accuracy_and_capability-h264_854x480_30fps.mp4",
-        "video_decode_accuracy_and_capability-h264_640x480_30fps.mp4",
-        "video_decode_accuracy_and_capability-h264_270x480_30fps.mp4",
-        "video_decode_accuracy_and_capability-vp9_854x362_30fps.webm",
-        "video_decode_accuracy_and_capability-vp9_854x480_30fps.webm",
-        "video_decode_accuracy_and_capability-vp9_640x480_30fps.webm",
-        "video_decode_accuracy_and_capability-vp9_270x480_30fps.webm",
-        // 720p
-        "video_decode_accuracy_and_capability-h264_1280x544_30fps.mp4",
-        "video_decode_accuracy_and_capability-h264_1280x720_30fps.mp4",
-        "video_decode_accuracy_and_capability-h264_960x720_30fps.mp4",
-        "video_decode_accuracy_and_capability-h264_406x720_30fps.mp4",
-        "video_decode_accuracy_and_capability-vp9_1280x544_30fps.webm",
-        "video_decode_accuracy_and_capability-vp9_1280x720_30fps.webm",
-        "video_decode_accuracy_and_capability-vp9_960x720_30fps.webm",
-        "video_decode_accuracy_and_capability-vp9_406x720_30fps.webm",
-        // 1080p
-        "video_decode_accuracy_and_capability-h264_1920x818_30fps.mp4",
-        "video_decode_accuracy_and_capability-h264_1920x1080_30fps.mp4",
-        "video_decode_accuracy_and_capability-h264_1440x1080_30fps.mp4",
-        "video_decode_accuracy_and_capability-h264_608x1080_30fps.mp4",
-        "video_decode_accuracy_and_capability-vp9_1920x818_30fps.webm",
-        "video_decode_accuracy_and_capability-vp9_1920x1080_30fps.webm",
-        "video_decode_accuracy_and_capability-vp9_1440x1080_30fps.webm",
-        "video_decode_accuracy_and_capability-vp9_608x1080_30fps.webm",
-        // 1440p
-        "video_decode_accuracy_and_capability-h264_2560x1090_30fps.mp4",
-        "video_decode_accuracy_and_capability-h264_2560x1440_30fps.mp4",
-        "video_decode_accuracy_and_capability-h264_1920x1440_30fps.mp4",
-        "video_decode_accuracy_and_capability-h264_810x1440_30fps.mp4",
-        "video_decode_accuracy_and_capability-vp9_2560x1090_30fps.webm",
-        "video_decode_accuracy_and_capability-vp9_2560x1440_30fps.webm",
-        "video_decode_accuracy_and_capability-vp9_1920x1440_30fps.webm",
-        "video_decode_accuracy_and_capability-vp9_810x1440_30fps.webm",
-        // 2160p
-        "video_decode_accuracy_and_capability-h264_3840x1634_30fps.mp4",
-        "video_decode_accuracy_and_capability-h264_3840x2160_30fps.mp4",
-        "video_decode_accuracy_and_capability-h264_2880x2160_30fps.mp4",
-        "video_decode_accuracy_and_capability-h264_1216x2160_30fps.mp4",
-        "video_decode_accuracy_and_capability-vp9_3840x1634_30fps.webm",
-        "video_decode_accuracy_and_capability-vp9_3840x2160_30fps.webm",
-        "video_decode_accuracy_and_capability-vp9_2880x2160_30fps.webm",
-        "video_decode_accuracy_and_capability-vp9_1216x2160_30fps.webm",
-        // cropped
-        "video_decode_with_cropping-h264_520x360_30fps.mp4",
-        "video_decode_with_cropping-vp9_520x360_30fps.webm"
+            // 144p
+            "video_decode_accuracy_and_capability-h264_256x108_30fps.mp4",
+            "video_decode_accuracy_and_capability-h264_256x144_30fps.mp4",
+            "video_decode_accuracy_and_capability-h264_192x144_30fps.mp4",
+            "video_decode_accuracy_and_capability-h264_82x144_30fps.mp4",
+            "video_decode_accuracy_and_capability-vp9_256x108_30fps.webm",
+            "video_decode_accuracy_and_capability-vp9_256x144_30fps.webm",
+            "video_decode_accuracy_and_capability-vp9_192x144_30fps.webm",
+            "video_decode_accuracy_and_capability-vp9_82x144_30fps.webm",
+            // 240p
+            "video_decode_accuracy_and_capability-h264_426x182_30fps.mp4",
+            "video_decode_accuracy_and_capability-h264_426x240_30fps.mp4",
+            "video_decode_accuracy_and_capability-h264_320x240_30fps.mp4",
+            "video_decode_accuracy_and_capability-h264_136x240_30fps.mp4",
+            "video_decode_accuracy_and_capability-vp9_426x182_30fps.webm",
+            "video_decode_accuracy_and_capability-vp9_426x240_30fps.webm",
+            "video_decode_accuracy_and_capability-vp9_320x240_30fps.webm",
+            "video_decode_accuracy_and_capability-vp9_136x240_30fps.webm",
+            // 360p
+            "video_decode_accuracy_and_capability-h264_640x272_30fps.mp4",
+            "video_decode_accuracy_and_capability-h264_640x360_30fps.mp4",
+            "video_decode_accuracy_and_capability-h264_480x360_30fps.mp4",
+            "video_decode_accuracy_and_capability-h264_202x360_30fps.mp4",
+            "video_decode_accuracy_and_capability-vp9_640x272_30fps.webm",
+            "video_decode_accuracy_and_capability-vp9_640x360_30fps.webm",
+            "video_decode_accuracy_and_capability-vp9_480x360_30fps.webm",
+            "video_decode_accuracy_and_capability-vp9_202x360_30fps.webm",
+            // 480p
+            "video_decode_accuracy_and_capability-h264_854x362_30fps.mp4",
+            "video_decode_accuracy_and_capability-h264_854x480_30fps.mp4",
+            "video_decode_accuracy_and_capability-h264_640x480_30fps.mp4",
+            "video_decode_accuracy_and_capability-h264_270x480_30fps.mp4",
+            "video_decode_accuracy_and_capability-vp9_854x362_30fps.webm",
+            "video_decode_accuracy_and_capability-vp9_854x480_30fps.webm",
+            "video_decode_accuracy_and_capability-vp9_640x480_30fps.webm",
+            "video_decode_accuracy_and_capability-vp9_270x480_30fps.webm",
+            // 720p
+            "video_decode_accuracy_and_capability-h264_1280x544_30fps.mp4",
+            "video_decode_accuracy_and_capability-h264_1280x720_30fps.mp4",
+            "video_decode_accuracy_and_capability-h264_960x720_30fps.mp4",
+            "video_decode_accuracy_and_capability-h264_406x720_30fps.mp4",
+            "video_decode_accuracy_and_capability-vp9_1280x544_30fps.webm",
+            "video_decode_accuracy_and_capability-vp9_1280x720_30fps.webm",
+            "video_decode_accuracy_and_capability-vp9_960x720_30fps.webm",
+            "video_decode_accuracy_and_capability-vp9_406x720_30fps.webm",
+            // 1080p
+            "video_decode_accuracy_and_capability-h264_1920x818_30fps.mp4",
+            "video_decode_accuracy_and_capability-h264_1920x1080_30fps.mp4",
+            "video_decode_accuracy_and_capability-h264_1440x1080_30fps.mp4",
+            "video_decode_accuracy_and_capability-h264_608x1080_30fps.mp4",
+            "video_decode_accuracy_and_capability-vp9_1920x818_30fps.webm",
+            "video_decode_accuracy_and_capability-vp9_1920x1080_30fps.webm",
+            "video_decode_accuracy_and_capability-vp9_1440x1080_30fps.webm",
+            "video_decode_accuracy_and_capability-vp9_608x1080_30fps.webm",
+            // 1440p
+            "video_decode_accuracy_and_capability-h264_2560x1090_30fps.mp4",
+            "video_decode_accuracy_and_capability-h264_2560x1440_30fps.mp4",
+            "video_decode_accuracy_and_capability-h264_1920x1440_30fps.mp4",
+            "video_decode_accuracy_and_capability-h264_810x1440_30fps.mp4",
+            "video_decode_accuracy_and_capability-vp9_2560x1090_30fps.webm",
+            "video_decode_accuracy_and_capability-vp9_2560x1440_30fps.webm",
+            "video_decode_accuracy_and_capability-vp9_1920x1440_30fps.webm",
+            "video_decode_accuracy_and_capability-vp9_810x1440_30fps.webm",
+            // 2160p
+            "video_decode_accuracy_and_capability-h264_3840x1634_30fps.mp4",
+            "video_decode_accuracy_and_capability-h264_3840x2160_30fps.mp4",
+            "video_decode_accuracy_and_capability-h264_2880x2160_30fps.mp4",
+            "video_decode_accuracy_and_capability-h264_1216x2160_30fps.mp4",
+            "video_decode_accuracy_and_capability-vp9_3840x1634_30fps.webm",
+            "video_decode_accuracy_and_capability-vp9_3840x2160_30fps.webm",
+            "video_decode_accuracy_and_capability-vp9_2880x2160_30fps.webm",
+            "video_decode_accuracy_and_capability-vp9_1216x2160_30fps.webm",
+            // cropped
+            "video_decode_with_cropping-h264_520x360_30fps.mp4",
+            "video_decode_with_cropping-vp9_520x360_30fps.webm"
     };
 
     private View videoView;
@@ -169,7 +168,7 @@ public class DecodeAccuracyTest extends DecodeAccuracyTestBase {
             if (matcher.matches()) {
                 testName = matcher.group(1);
             }
-            testParams.add(new Object[] { testName.replace("_", " ").toUpperCase(), file });
+            testParams.add(new Object[]{testName.replace("_", " ").toUpperCase(), file});
         }
         return testParams;
     }
@@ -178,7 +177,10 @@ public class DecodeAccuracyTest extends DecodeAccuracyTestBase {
         this.fileName = fileName;
     }
 
-    @Test(timeout = PER_TEST_TIMEOUT_MS)
+    public DecodeAccuracyTest() {
+        this.fileName = VIDEO_FILES[VIDEO_FILES.length - 10];
+    }
+
     public void testGLViewDecodeAccuracy() throws Exception {
         runTest(new GLSurfaceViewFactory(), new VideoFormat(fileName));
     }
@@ -256,14 +258,14 @@ public class DecodeAccuracyTest extends DecodeAccuracyTestBase {
         final BitmapCompare.Difference difference = BitmapCompare.computeMinimumDifference(
                 result, golden, videoFormat.getOriginalWidth(), videoFormat.getOriginalHeight());
         assertTrue("With the best matched border crop ("
-                + difference.bestMatchBorderCrop.first + ", "
-                + difference.bestMatchBorderCrop.second + "), "
-                + "greatest pixel difference is "
-                + difference.greatestPixelDifference
-                + (difference.greatestPixelDifferenceCoordinates != null
+                        + difference.bestMatchBorderCrop.first + ", "
+                        + difference.bestMatchBorderCrop.second + "), "
+                        + "greatest pixel difference is "
+                        + difference.greatestPixelDifference
+                        + (difference.greatestPixelDifferenceCoordinates != null
                         ? " at (" + difference.greatestPixelDifferenceCoordinates.first + ", "
-                            + difference.greatestPixelDifferenceCoordinates.second + ")" : "")
-                + " which is over the allowed difference " + ALLOWED_GREATEST_PIXEL_DIFFERENCE,
+                        + difference.greatestPixelDifferenceCoordinates.second + ")" : "")
+                        + " which is over the allowed difference " + ALLOWED_GREATEST_PIXEL_DIFFERENCE,
                 difference.greatestPixelDifference <= ALLOWED_GREATEST_PIXEL_DIFFERENCE);
     }
 
