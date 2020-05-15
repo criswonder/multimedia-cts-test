@@ -2049,6 +2049,7 @@ class BitmapCompare {
     @TargetApi(12)
     public static Difference computeMinimumDifference(
             Bitmap bitmap1, Bitmap bitmap2, int trueWidth, int trueHeight) {
+        //result, golden, videoFormat.getOriginalWidth(), videoFormat.getOriginalHeight()
 
         double hBorder = (double) bitmap1.getWidth() / (double) trueWidth;
         double vBorder = (double) bitmap1.getHeight() / (double) trueHeight;
